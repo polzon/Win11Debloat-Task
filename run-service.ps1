@@ -10,13 +10,13 @@ function Get-Script {
     if (Test-Path -Path $DebloatSrc -PathType Container) {
         Write-Host "Debloat folder exists, pulling latest updates."
         Push-Location $DebloatSrc
-        git pull --quiet
+        git pull
         Pop-Location
     }
     # If folder doesn't exist, clone it instead.
     else {
         Write-Host "Source folder '$DebloatSrc' not found. Cloning instead."
-        git clone https://github.com/Raphire/Win11Debloat $DebloatName --quiet
+        git clone https://github.com/Raphire/Win11Debloat $DebloatName
     }
 }
 
@@ -65,6 +65,8 @@ function Get-Admin2 {
     }
 }
 
-#Get-Script
-Get-Admin2
+Get-Script
+# Get-Admin # Currently borked.
 New-Debloat
+
+Exit
