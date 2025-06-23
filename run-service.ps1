@@ -1,9 +1,25 @@
-# WARNING: I just vibe coded this with copilot lol, I don't understand this
-# code's implications.
-
 $DebloatName = "Win11Debloat"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $DebloatSrc = Join-Path -Path $ScriptDir -ChildPath $DebloatName
+
+# # Check for administrator privileges
+# if (-not ([Security.Principal.WindowsIdentity]::GetCurrent().Owner.IsWellKnown(
+#             [Security.Principal.WellKnownSidType]::BuiltinAdministratorsSid))) {
+#     Write-Host "Requesting administrator privileges for $DebloatName script."
+#     Start-Process powershell.exe -Verb RunAs -ArgumentList "-File", "`"$($MyInvocation.MyCommand.Definition)`""
+
+#     Exit
+# }
+
+if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) { Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs; exit }
+
+# # Check for administrator privileges
+# if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(
+#         [Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+#     Write-Host "Requesting administrator privileges for $DebloatName script."
+#     Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList "-File `"$($MyInvocation.MyCommand.Path)`"  `"$($MyInvocation.MyCommand.UnboundArguments)`""
+#     Break
+# }
 
 function Get-Script {
     # Check if the debloat folder exists.
@@ -44,29 +60,16 @@ function New-Debloat {
     }
 }
 
-function Get-Admin {
-    # Check for administrator privileges
-    if (-not ([Security.Principal.WindowsIdentity]::GetCurrent().Owner.IsWellKnown(
-                [Security.Principal.WellKnownSidType]::BuiltinAdministratorsSid))) {
-        Write-Host "Requesting administrator privileges for $DebloatName script."
-        Start-Process powershell.exe -Verb RunAs -ArgumentList "-File", "`"$($MyInvocation.MyCommand.Definition)`""
+function Get-DebloatTask {
+    Write-Host "Setting up new Debloat Task."
+    $TaskTrigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday -At 1am
+    $TaskAction = New-ScheduledTaskAction -Execute "PowerShell" -Argument $PSCommandPath -WorkingDirectory $ScriptDir
 
-        Exit
-    }
-}
-
-function Get-Admin2 {
-    # Check for administrator privileges
-    if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(
-            [Security.Principal.WindowsBuiltInRole] 'Administrator')) {
-        Write-Host "Requesting administrator privileges for $DebloatName script."
-        Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList "-File `"$($MyInvocation.MyCommand.Path)`"  `"$($MyInvocation.MyCommand.UnboundArguments)`""
-        Exit
-    }
+    Register-ScheduledTask 'Win11Debloat Task' -AsJob -RunLevel Highest -Action $TaskAction -Trigger $TaskTrigger -Description "Periodically re-runs win11 debloat to re-disable anything that windows update may have re-enabled."
 }
 
 Get-Script
-# Get-Admin # Currently borked.
+Get-DebloatTask
 New-Debloat
 
-Exit
+Start-Sleep -Seconds 5

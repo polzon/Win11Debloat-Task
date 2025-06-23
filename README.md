@@ -8,6 +8,5 @@ as my personal preferred settings, then run those as default.
 
 # Usage
 
-- Open Task Scheduler on Windows.
-- Import win11-debloater-task.xml as a task.
-- Customize triggers as needed, the default is to run every 2 weeks.
+- Run 'run-service.ps1' inside of powershell.
+- It will prompt you to run as admin, this is neccesary to install itself as a task and also for the Win11Debloat script.
