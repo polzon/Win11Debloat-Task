@@ -2,24 +2,14 @@ $DebloatName = "Win11Debloat"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $DebloatSrc = Join-Path -Path $ScriptDir -ChildPath $DebloatName
 
-# # Check for administrator privileges
-# if (-not ([Security.Principal.WindowsIdentity]::GetCurrent().Owner.IsWellKnown(
-#             [Security.Principal.WellKnownSidType]::BuiltinAdministratorsSid))) {
-#     Write-Host "Requesting administrator privileges for $DebloatName script."
-#     Start-Process powershell.exe -Verb RunAs -ArgumentList "-File", "`"$($MyInvocation.MyCommand.Definition)`""
+# Check for administrator privileges
+if (-not ([Security.Principal.WindowsIdentity]::GetCurrent().Owner.IsWellKnown(
+            [Security.Principal.WellKnownSidType]::BuiltinAdministratorsSid))) {
+    Write-Host "Requesting administrator privileges for $DebloatName script."
+    Start-Process powershell.exe -Verb RunAs -ArgumentList "-File", "`"$($MyInvocation.MyCommand.Definition)`""
 
-#     Exit
-# }
-
-if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) { Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs; exit }
-
-# # Check for administrator privileges
-# if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(
-#         [Security.Principal.WindowsBuiltInRole] 'Administrator')) {
-#     Write-Host "Requesting administrator privileges for $DebloatName script."
-#     Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList "-File `"$($MyInvocation.MyCommand.Path)`"  `"$($MyInvocation.MyCommand.UnboundArguments)`""
-#     Break
-# }
+    Exit
+}
 
 function Get-Script {
     # Check if the debloat folder exists.
