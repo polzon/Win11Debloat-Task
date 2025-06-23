@@ -1,0 +1,18 @@
+CreateRestorePoint#- Create a system restore point
+RemoveApps#- Remove default selection of bloatware apps
+DisableTelemetry#- Disable telemetry, diagnostic data, activity history, app-launch tracking & targeted ads
+DisableSuggestions#- Disable tips, tricks, suggestions and ads in start, settings, notifications and File Explorer
+DisableSettings365Ads#- Disable Microsoft 365 ads in Settings Home
+DisableLockscreenTips#- Disable tips & tricks on the lockscreen
+DisableBing#- Disable & remove Bing web search, Bing AI and Cortana from Windows search
+DisableCopilot#- Disable and remove Microsoft Copilot
+DisableRecall#- Disable and remove Windows Recall snapshots
+RevertContextMenu#- Restore the old Windows 10 style context menu
+DisableStickyKeys#- Disable the Sticky Keys keyboard shortcut
+HideGiveAccessTo#- Hide the 'Give access to' option in the context menu
+HideShare#- Hide the 'Share' option in the context menu
+DisableStartRecommended#- Disable & hide the recommended section in the start menu.
+DisableStartPhoneLink#- Disable the Phone Link mobile devices integration in the start menu.
+TaskbarAlignLeft#- Align taskbar icons to the left
+DisableWidgets#- Disable the widget service & hide the widget (news and interests) icon from the taskbar
+HideDupliDrive#- Hide duplicate removable drive entries from the File Explorer sidepanel
